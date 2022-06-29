@@ -28,6 +28,8 @@ main {
     width: 80%;
     height: 90%;
     background-color: #FCF8E8;
+
+    padding: 20px;
 }
 
 aside {
@@ -69,6 +71,17 @@ footer {
 
     margin-right: 15px;
     color: #94B49F;
+}
+
+#memoArea {
+    all: unset;
+    width: 100%;
+    /* width: 20px; */
+    height: 100%;
+    background-color: transparent;
+    /* border: 0px; */
+
+    
 }
 
 #maker_info {
