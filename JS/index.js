@@ -42,7 +42,7 @@ function createEditButton(editIcon) {
     return editButton;
 }
 
-
+// memoList에 memo 생성
 function createMemo(container) {
     let memo = document.createElement("div");
     let memoTitle = createMemoTitle(container);
@@ -68,31 +68,56 @@ function createMemo(container) {
 }
 
 
-function createEditTitleInput() {
-    let titleInput = document.createElement("input");
+function createMemoTitleEditer() {
+    let titleEditer = document.createElement("input");
 
-    titleInput.setAttribute("class", "titleInput");
+    titleEditer.setAttribute("class", "titleEditer");
 
-    titleInput.style.width = "140px";
-    titleInput.style.height = "34px";
-    titleInput.style.border = "1px solid #94B49F"
-    titleInput.style.position = "absolute"
-    titleInput.style.top = "0";
-    titleInput.style.left = "20px";
+    titleEditer.style.width = "140px";
+    titleEditer.style.height = "34px";
+    titleEditer.style.border = "1px solid #94B49F"
+    titleEditer.style.position = "absolute"
+    titleEditer.style.top = "0";
+    titleEditer.style.left = "20px";
 
-    return titleInput;
+    return titleEditer;
 }
 
 
 function editTitle(memo) {
-    let editTitleInput = createEditTitleInput()
-    memo.appendChild(editTitleInput);
-    editTitleInput.focus();
+    let titleEditer = createMemoTitleEditer();
+    memo.appendChild(titleEditer);
+    titleEditer.focus();
+}
+
+// 제목 수정 이벤트 핸들러
+function handleEditTitleEvent(memo) {
+    let memoNode = memoLinkedList.getNode(memo.firstChild.innerHTML);
+
+    //제목 수정 로직
+    if(memo.lastChild.className == "titleEditer") {
+        let inputValue = memo.lastChild.value;
+
+        if(inputValue !== "") {
+            memoNode.setTitle(inputValue);
+            if(inputValue.length >= 6) {
+                memo.firstChild.innerHTML =memoNode.getShortTitle();
+            } else {
+                memo.firstChild.innerHTML = memoNode.getTitle();
+            }
+        }
+        memoArea.innerHTML = memoNode.getMemo();
+        memo.removeChild(memo.lastChild);
+    } else {
+        // 제목 수정창을 생성
+        editTitle(memo);
+    }
 }
 
 
 document.addEventListener("click", (e) => {
     let className = e.target.className; 
+    let memo = e.target.parentNode.parentNode;
 
     if(e.target && className) {
         // 메모 추가 버튼을 눌렀을 때 이벤트
@@ -104,30 +129,7 @@ document.addEventListener("click", (e) => {
 
         // 제목 수정을 눌렀을 때 이벤트
         if(className.includes("fa-pen")) {
-            let memo = e.target.parentNode.parentNode;
-
-            if(memo.lastChild.className == "titleInput") {
-                let previousValue = memo.firstChild.innerHTML;
-                let inputValue = memo.lastChild.value;
-
-                memo.firstChild.innerHTML = "";
-
-                if(inputValue !== "") {
-                    if(inputValue.length >= 7 ) {
-                        console.log("change")
-                        memo.style.height = "fit-content";
-                        memo.firstChild.style.float = "";
-                    }
-                    memo.firstChild.innerHTML = inputValue;
-                } else {
-                    memo.firstChild.innerHTML = previousValue;
-                }
-
-                memo.removeChild(memo.lastChild);
-            } else {
-                
-                editTitle(memo);
-            }
+            handleEditTitleEvent(memo)
         }
 
         // 메모 지우기를 눌렀을 때 이벤트
@@ -146,6 +148,7 @@ document.addEventListener("click", (e) => {
 4. 삭제 후 undo 로직
 5. 전반적인 디자인 
 6. 안내문구
+7. edit 시 title 공백으로 전환
 https://colorhunt.co/palette/fcf8e894b49fecb390df7861
 폰트어썸
 */

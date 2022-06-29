@@ -2,7 +2,7 @@ class Node {
     constructor(title) {
         this.shortTitle = title;
         this.title = title;
-        this.memo = title + "\n";
+        this.memo = "";
         this.previousNode = null;
         this.nextNode = null;
     }
@@ -11,7 +11,7 @@ class Node {
     setTitle(text) {
         this.title = text;
 
-        if(this.title.length >= 7) {
+        if(this.title.length >= 6) {
             this.shortTitle = this.title.substring(0, 7) + "...";
         } else {
             this.shortTitle = this. title;
@@ -35,7 +35,7 @@ class Node {
 
 
     getMemo() {
-        return this.memo;
+        return this.title + "\n" + this.memo;
     }
 }
 
@@ -79,11 +79,12 @@ class MemoLinkedList {
     getNode(title) {
         let currentNode = this.head;
         
-        while(currentNode.title !== title) {
+        while(currentNode) {
+            if(currentNode.title === title || currentNode.shortTitle === title) {
+                return currentNode;
+            }
             currentNode = currentNode.nextNode;
         }
-
-        return currentNode;
     }
 
 
