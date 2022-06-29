@@ -43,6 +43,7 @@ class Node {
 class MemoLinkedList {
     constructor() {
         this.head = null;
+        this.selectedNode = null;
     }
 
 
@@ -59,6 +60,7 @@ class MemoLinkedList {
 
             currentNode.nextNode = node;
             node.previousNode = currentNode;
+            this.setSelectedNode(node);
         }
     }
 
@@ -73,6 +75,7 @@ class MemoLinkedList {
         nextNode = previousNode.nextNode;
         previousNode.nextNode = node;
         node.nextNode = nextNode;
+        this.setSelectedNode(node);
     }
 
 
@@ -81,10 +84,13 @@ class MemoLinkedList {
         
         while(currentNode) {
             if(currentNode.title === title || currentNode.shortTitle === title) {
+                this.setSelectedNode(currentNode);
                 return currentNode;
             }
             currentNode = currentNode.nextNode;
         }
+
+        return null;
     }
 
 
@@ -98,5 +104,15 @@ class MemoLinkedList {
         }
 
         return nodeArray;
+    }
+
+
+    setSelectedNode(node) {
+        this.selectedNode = node;
+    }
+
+    
+    getSelectedNode() {
+        return this.selectedNode;
     }
 }
