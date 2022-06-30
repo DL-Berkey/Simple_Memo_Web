@@ -64,6 +64,7 @@ function editTitle(component) {
 class MemoComponent {
     constructor(memoList) {
         this.memoList = memoList;
+        this.memoLinkedList = new MemoLinkedList();
     }
 
 
@@ -72,6 +73,8 @@ class MemoComponent {
         let memoTitle = createMemoTitle();
         let editIcon = createEditIcon();
         let editButton = createEditButton(editIcon);
+
+        let memoNode = this.memoLinkedList.createMemo(memoTitle.innerHTML);
 
         memo.style.height = "42px";
         memo.style.borderBottom = "2px solid #FCF8E8";
@@ -83,7 +86,7 @@ class MemoComponent {
 
         return {
             "component": memo,
-            "title": memoTitle.innerHTML,
+            "node": memoNode,
         };
     }
 

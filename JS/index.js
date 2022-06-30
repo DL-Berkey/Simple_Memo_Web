@@ -5,18 +5,6 @@ let memoComponent = new MemoComponent();
 let memoList = document.getElementById("memo_list");
 let memoArea = document.getElementById("memoArea");
 
-// memoList에 memo 추가
-function addMemo() {
-    let component = memoComponent.createComponent();
-    memoList.appendChild(component["component"]);
-
-    if(memoList.childElementCount === 14) {
-        memoList.style.overflow = "scroll";
-    }
-
-    return String(component["title"]);
-}
-
 // click event listener
 document.addEventListener("click", (e) => {
     let className = e.target.className; 
@@ -25,9 +13,15 @@ document.addEventListener("click", (e) => {
     if(e.target && className) {
         // 메모 추가 버튼을 눌렀을 때 이벤트
         if(className.includes("plus")) {
-            let title = addMemo();
-            memoLinkedList.createMemo(title);
-            memoArea.innerHTML = memoLinkedList.getNode(title).getMemo();
+            let component = memoComponent.createComponent();
+
+            memoList.appendChild(component["component"]);
+            console.log(component["node"])
+            memoArea.innerHTML = component["node"].getMemo();
+
+            if(memoList.childElementCount === 14) {
+                memoList.style.overflow = "scroll";
+            }
         }
 
         // 제목 수정을 눌렀을 때 이벤트

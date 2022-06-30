@@ -1,11 +1,17 @@
 class Node {
     constructor(title) {
+        this.uniqueID = 1;
         this.shortTitle = title;
         this.title = title;
         this.memo = "";
         this.previousNode = null;
         this.nextNode = null;
     }
+
+
+    setUniqueID(number) {
+        this.uniqueID = number;
+    }    
 
 
     setTitle(text) {
@@ -21,6 +27,11 @@ class Node {
 
     setMemo(text) {
         this.memo = text;
+    }
+
+
+    getUniqueID() {
+        return this.uniqueID;
     }
 
 
@@ -60,8 +71,13 @@ class MemoLinkedList {
 
             currentNode.nextNode = node;
             node.previousNode = currentNode;
+
+            node.setUniqueID(currentNode.getUniqueID() + 1);
+
             this.setSelectedNode(node);
         }
+
+        return node;
     }
 
 
