@@ -1,52 +1,81 @@
 class Node {
+    // private field 선언
+    #uniqueID;
+    #shortTitle;
+    #title;
+    #memo;
+    #previousNode;
+    #nextNode;
+
+
     constructor(title) {
-        this.uniqueID = 1;
-        this.shortTitle = title;
-        this.title = title;
-        this.memo = "";
-        this.previousNode = null;
-        this.nextNode = null;
+        this.#uniqueID = 1;
+        this.#shortTitle = title;
+        this.#title = title;
+        this.#memo = "";
+        this.#previousNode = null;
+        this.#nextNode = null;
     }
 
 
     setUniqueID(number) {
-        this.uniqueID = number;
+        this.#uniqueID = number;
     }    
 
 
     setTitle(text) {
-        this.title = text;
+        this.#title = text;
 
-        if(this.title.length >= 6) {
-            this.shortTitle = this.title.substring(0, 7) + "...";
+        if(this.#title.length >= 6) {
+            this.#shortTitle = this.#title.substring(0, 7) + "...";
         } else {
-            this.shortTitle = this. title;
+            this.#shortTitle = this.#title;
         }
     }
 
 
     setMemo(text) {
-        this.memo = text;
+        this.#memo = text;
+    }
+
+
+    setPreviousNode(node) {
+        this.#previousNode = node;
+    }
+
+
+    setNextNode(node) {
+        this.#nextNode = node;
     }
 
 
     getUniqueID() {
-        return this.uniqueID;
+        return this.#uniqueID;
     }
 
 
     getShortTitle() {
-        return this.shortTitle;
+        return this.#shortTitle;
     }
 
 
     getTitle() {
-        return this.title;
+        return this.#title;
     }
 
 
     getMemo() {
-        return this.title + "\n" + this.memo;
+        return this.#title + "\n" + this.#memo;
+    }
+
+    
+    getPreviousNode() {
+        return this.#previousNode;
+    }
+
+    
+    getNextNode() {
+        return this.#nextNode;
     }
 }
 
@@ -54,81 +83,80 @@ class Node {
 class MemoLinkedList {
     constructor() {
         this.head = null;
-        this.selectedNode = null;
     }
 
 
     createMemo(title) {
-        let node = new Node(title)
+        let node = new Node(title);
 
         if(this.head === null) {
             this.head = node;
+
         } else {
             let currentNode = this.head;
-            while(currentNode.nextNode !== null) {
-                currentNode = currentNode.nextNode;
+            while(currentNode.getNextNode() !== null) {
+                currentNode = currentNode.getNextNode();
             }
 
-            currentNode.nextNode = node;
-            node.previousNode = currentNode;
+            currentNode.setNextNode(node);
+            node.setPreviousNode(currentNode);
 
             node.setUniqueID(currentNode.getUniqueID() + 1);
-
-            this.setSelectedNode(node);
         }
+        node.setTitle(node.getTitle() + " "  + String(node.getUniqueID()));
 
         return node;
     }
 
 
     deleteMemo(node) {
-        currentNode = node.previousNode;
-        currentNode.nextNode = node.nextNode;
+        currentNode = node.getPreviousNode();
+        currentNode.setNextNode(node.getNextNode());
     }
 
 
     insert(previousNode, node) {
-        nextNode = previousNode.nextNode;
-        previousNode.nextNode = node;
-        node.nextNode = nextNode;
-        this.setSelectedNode(node);
+        nextNode = previousNode.getNextNode();
+        previousNode.setNextNode(node);
+        node.setNextNode(nextNode);
+
+        node.setUniqueID(nextNode.getUniqueID());
+
+        currentNode = nextNode;
+        while(currentNode) {
+            currentNode.setUniqueID(currentNode.getUniqueID() + 1);
+            currentNode = currentNode.getNextNode();
+        }
     }
 
 
-    getNode(title) {
+    getMemo(title) {
         let currentNode = this.head;
-        
+
+        console.log("pre-while")
+        console.log(currentNode)
         while(currentNode) {
-            if(currentNode.title === title || currentNode.shortTitle === title) {
+            console.log("while")
+            if(currentNode.getTitle() === title || currentNode.getShortTitle() === title) {
                 this.setSelectedNode(currentNode);
                 return currentNode;
             }
-            currentNode = currentNode.nextNode;
+            currentNode = currentNode.getNextNode();
         }
 
         return null;
     }
 
 
-    getAllNode() {
+    getAllMemo() {
         let nodeArray = [];
         let currentNode = this.head;
 
         while(currentNode) {
             nodeArray.push(currentNode);
-            currentNode = currentNode.nextNode;
+            currentNode = currentNode.getNextNode();
         }
 
         return nodeArray;
-    }
-
-
-    setSelectedNode(node) {
-        this.selectedNode = node;
-    }
-
-    
-    getSelectedNode() {
-        return this.selectedNode;
     }
 }

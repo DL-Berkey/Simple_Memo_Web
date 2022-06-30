@@ -1,4 +1,4 @@
-function createMemoTitle() {
+function createMemoTitle(title) {
     let memoTitle = document.createElement("h4");
 
     memoTitle.style.marginLeft = "20px";
@@ -6,7 +6,7 @@ function createMemoTitle() {
     memoTitle.style.left = "0";
     memoTitle.style.top = "0";
     memoTitle.style.fontWeight = "350"
-    memoTitle.innerHTML = "메모";
+    memoTitle.innerHTML = title;
 
     return memoTitle;
 }
@@ -69,12 +69,12 @@ class MemoComponent {
 
 
     createComponent() {
+        let memoNode = this.memoLinkedList.createMemo("메모");
+
         let memo = document.createElement("div");
-        let memoTitle = createMemoTitle();
+        let memoTitle = createMemoTitle(memoNode.getTitle());
         let editIcon = createEditIcon();
         let editButton = createEditButton(editIcon);
-
-        let memoNode = this.memoLinkedList.createMemo(memoTitle.innerHTML);
 
         memo.style.height = "42px";
         memo.style.borderBottom = "2px solid #FCF8E8";
@@ -92,7 +92,8 @@ class MemoComponent {
 
 
     editComponent(component) {
-        let memoNode = memoLinkedList.getNode(component.firstChild.innerHTML);
+        let memoNode = memoLinkedList.getMemo(component.firstChild.innerHTML);
+        console.log("제목",component.firstChild.innerHTML)
     
         //제목 수정 로직
         if(component.lastChild.className === "titleEditer") {
@@ -112,5 +113,10 @@ class MemoComponent {
             // 제목 수정창을 생성
             editTitle(component);
         }
+    }
+
+    test() {
+        let value = this.memoLinkedList.getAllNode();
+        console.log(value);
     }
 }

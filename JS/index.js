@@ -16,7 +16,6 @@ document.addEventListener("click", (e) => {
             let component = memoComponent.createComponent();
 
             memoList.appendChild(component["component"]);
-            console.log(component["node"])
             memoArea.innerHTML = component["node"].getMemo();
 
             if(memoList.childElementCount === 14) {
@@ -31,8 +30,7 @@ document.addEventListener("click", (e) => {
 
         // 메모 지우기를 눌렀을 때 이벤트
         if(className.includes("minus")) {
-            let value = memoLinkedList.getAllNode();
-            console.log(value, memoLinkedList.getSelectedNode());
+            memoComponent.test();
         }
     }
 });
@@ -47,7 +45,8 @@ document.addEventListener("click", (e) => {
 6. 안내문구
 7. edit 시 title 공백으로 전환
 8. 메모 순서 드래그 앤 드랍으로 변경가능
-9. textarea의 빨간 밑줄 제거
+9. textarea의 빨간 밑줄 
+10. memoLinkedList selectedNode 삭제
 https://colorhunt.co/palette/fcf8e894b49fecb390df7861
 폰트어썸
 */
