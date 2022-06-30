@@ -1,4 +1,4 @@
-function createMemoTitle(container) {
+function createMemoTitle() {
     let memoTitle = document.createElement("h4");
 
     memoTitle.style.marginLeft = "20px";
@@ -6,7 +6,7 @@ function createMemoTitle(container) {
     memoTitle.style.left = "0";
     memoTitle.style.top = "0";
     memoTitle.style.fontWeight = "350"
-    memoTitle.innerHTML = "메모 " + String(parseInt(container.childElementCount) + 1);
+    memoTitle.innerHTML = "메모";
 
     return memoTitle;
 }
@@ -37,14 +37,39 @@ function createEditButton(editIcon) {
     return editButton;
 }
 
-class memoComponent {
+
+function createMemoTitleEditer() {
+    let titleEditer = document.createElement("input");
+
+    titleEditer.setAttribute("class", "titleEditer");
+
+    titleEditer.style.width = "140px";
+    titleEditer.style.height = "34px";
+    titleEditer.style.border = "1px solid #94B49F"
+    titleEditer.style.position = "absolute"
+    titleEditer.style.top = "0";
+    titleEditer.style.left = "20px";
+
+    return titleEditer;
+}
+
+
+function editTitle(component) {
+    let titleEditer = createMemoTitleEditer();
+    component.appendChild(titleEditer);
+    titleEditer.focus();
+}
+
+// memoComponent 생성
+class MemoComponent {
     constructor(memoList) {
         this.memoList = memoList;
     }
 
-    createMemoComponent() {
+
+    createComponent() {
         let memo = document.createElement("div");
-        let memoTitle = createMemoTitle(container);
+        let memoTitle = createMemoTitle();
         let editIcon = createEditIcon();
         let editButton = createEditButton(editIcon);
 
@@ -56,6 +81,33 @@ class memoComponent {
         memo.appendChild(memoTitle);
         memo.appendChild(editButton);
 
-        return memo;
+        return {
+            "component": memo,
+            "title": memoTitle.innerHTML,
+        };
+    }
+
+
+    editComponent(component) {
+        let memoNode = memoLinkedList.getNode(component.firstChild.innerHTML);
+    
+        //제목 수정 로직
+        if(component.lastChild.className === "titleEditer") {
+            let inputValue = component.lastChild.value;
+    
+            if(inputValue !== "") {
+                memoNode.setTitle(inputValue);
+                if(inputValue.length >= 6) {
+                    component.firstChild.innerHTML =memoNode.getShortTitle();
+                } else {
+                    component.firstChild.innerHTML = memoNode.getTitle();
+                }
+            }
+            memoArea.innerHTML = memoNode.getMemo();
+            component.removeChild(component.lastChild);
+        } else {
+            // 제목 수정창을 생성
+            editTitle(component);
+        }
     }
 }
