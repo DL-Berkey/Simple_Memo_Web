@@ -65,7 +65,7 @@ class Node {
 
 
     getMemo() {
-        return this.#title + "\n" + this.#memo;
+        return this.#memo;
     }
 
     
@@ -81,19 +81,22 @@ class Node {
 
 
 class MemoLinkedList {
+    //private field 선언
+    #head
+
     constructor() {
-        this.head = null;
+        this.#head = null;
     }
 
 
-    createMemo(title) {
+    createNode(title) {
         let node = new Node(title);
 
-        if(this.head === null) {
-            this.head = node;
+        if(this.#head === null) {
+            this.#head = node;
 
         } else {
-            let currentNode = this.head;
+            let currentNode = this.#head;
             while(currentNode.getNextNode() !== null) {
                 currentNode = currentNode.getNextNode();
             }
@@ -109,20 +112,25 @@ class MemoLinkedList {
     }
 
 
-    deleteMemo(node) {
-        currentNode = node.getPreviousNode();
-        currentNode.setNextNode(node.getNextNode());
+    deleteNode(node) {
+        if (this.#head !== node) {
+            let currentNode = node.getPreviousNode();
+            currentNode.setNextNode(node.getNextNode());
+        } else {
+            let currentNode = node.getNextNode();
+            this.#head = currentNode;
+        }
     }
 
 
-    insert(previousNode, node) {
-        nextNode = previousNode.getNextNode();
+    insertNode(previousNode, node) {
+        let nextNode = previousNode.getNextNode();
         previousNode.setNextNode(node);
         node.setNextNode(nextNode);
 
         node.setUniqueID(nextNode.getUniqueID());
 
-        currentNode = nextNode;
+        let currentNode = nextNode;
         while(currentNode) {
             currentNode.setUniqueID(currentNode.getUniqueID() + 1);
             currentNode = currentNode.getNextNode();
@@ -130,15 +138,11 @@ class MemoLinkedList {
     }
 
 
-    getMemo(title) {
-        let currentNode = this.head;
+    getNode(title) {
+        let currentNode = this.#head;
 
-        console.log("pre-while")
-        console.log(currentNode)
         while(currentNode) {
-            console.log("while")
             if(currentNode.getTitle() === title || currentNode.getShortTitle() === title) {
-                this.setSelectedNode(currentNode);
                 return currentNode;
             }
             currentNode = currentNode.getNextNode();
@@ -148,9 +152,9 @@ class MemoLinkedList {
     }
 
 
-    getAllMemo() {
+    getAllNode() {
         let nodeArray = [];
-        let currentNode = this.head;
+        let currentNode = this.#head;
 
         while(currentNode) {
             nodeArray.push(currentNode);

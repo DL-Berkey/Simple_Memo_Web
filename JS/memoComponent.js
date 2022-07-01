@@ -1,5 +1,6 @@
 function createMemoTitle(title) {
     let memoTitle = document.createElement("h4");
+    memoTitle.setAttribute("class", "memoTitle");
 
     memoTitle.style.marginLeft = "20px";
     memoTitle.position = "absolute";
@@ -13,14 +14,22 @@ function createMemoTitle(title) {
 
 
 function createEditIcon() {
-    editIcon = document.createElement("i");
-
+    let editIcon = document.createElement("i");
     editIcon.setAttribute("class", "fa-solid fa-pen");
+
     editIcon.style.color = "#94B49F";
 
     return editIcon;
 }
 
+function createDeleteIcon() {
+    let deleteIcon = document.createElement("i");
+    deleteIcon.setAttribute("class", "fa-solid fa-xmark");
+
+    deleteIcon.style.color = "#94B49F";
+
+    return deleteIcon;
+}
 
 function createEditButton(editIcon) {
     let editButton = document.createElement("button");
@@ -40,7 +49,6 @@ function createEditButton(editIcon) {
 
 function createMemoTitleEditer() {
     let titleEditer = document.createElement("input");
-
     titleEditer.setAttribute("class", "titleEditer");
 
     titleEditer.style.width = "140px";
@@ -49,32 +57,25 @@ function createMemoTitleEditer() {
     titleEditer.style.position = "absolute"
     titleEditer.style.top = "0";
     titleEditer.style.left = "20px";
-
+    
     return titleEditer;
-}
-
-
-function editTitle(component) {
-    let titleEditer = createMemoTitleEditer();
-    component.appendChild(titleEditer);
-    titleEditer.focus();
 }
 
 // memoComponent 생성
 class MemoComponent {
-    constructor(memoList) {
-        this.memoList = memoList;
-        this.memoLinkedList = new MemoLinkedList();
+    constructor(memoData) {
+        this.memoLinkedList = memoData;
     }
 
 
     createComponent() {
-        let memoNode = this.memoLinkedList.createMemo("메모");
+        let memoNode = this.memoLinkedList.createNode("메모");
 
         let memo = document.createElement("div");
         let memoTitle = createMemoTitle(memoNode.getTitle());
         let editIcon = createEditIcon();
         let editButton = createEditButton(editIcon);
+        memo.setAttribute("class", "memo");
 
         memo.style.height = "42px";
         memo.style.borderBottom = "2px solid #FCF8E8";
@@ -91,11 +92,16 @@ class MemoComponent {
     }
 
 
-    editComponent(component) {
-        let memoNode = memoLinkedList.getMemo(component.firstChild.innerHTML);
-        console.log("제목",component.firstChild.innerHTML)
-    
-        //제목 수정 로직
+    deleteComponent(component) {
+        let memoNode = memoData.getNode(component.firstChild.innerHTML);
+        console.log(memoNode)
+        memoData.deleteNode(memoNode);
+    }
+
+
+    addTitleEditer(component) {
+        let memoNode = this.memoLinkedList.getNode(component.firstChild.innerHTML);
+
         if(component.lastChild.className === "titleEditer") {
             let inputValue = component.lastChild.value;
     
@@ -107,13 +113,31 @@ class MemoComponent {
                     component.firstChild.innerHTML = memoNode.getTitle();
                 }
             }
-            memoArea.innerHTML = memoNode.getMemo();
+            titleArea.innerHTML = memoNode.getTitle()
             component.removeChild(component.lastChild);
         } else {
-            // 제목 수정창을 생성
-            editTitle(component);
+            // 제목 수정창을 생성);
+            let titleEditer = createMemoTitleEditer();
+            
+            component.appendChild(titleEditer);
+            titleEditer.focus();
+        }
+
+        return memoNode;
+    }
+
+
+    addDeleteIcon(component) {
+        let button = component.childNodes[1];
+        if(button.firstChild.className.includes("fa-pen")) {
+            button.removeChild(button.firstChild);
+            button.appendChild(createDeleteIcon());
+        } else {
+            button.removeChild(button.firstChild);
+            button.appendChild(createEditIcon());
         }
     }
+
 
     test() {
         let value = this.memoLinkedList.getAllNode();
