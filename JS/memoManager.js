@@ -2,32 +2,36 @@ class MemoManager {
     //private field 선언
     #selectedMemo;
 
-    constructor(memoData, titleArea, memoArea) {
-        this.memoLinkedList = memoData;
+    constructor(memoData, titleSpace, memoSpace) {
         this.#selectedMemo = null;
-        this.titleArea = titleArea;
-        this.memoArea = memoArea;
+        this.memoData = memoData;
+        this.titleSpace = titleSpace;
+        this.memoSpace = memoSpace;
     }
-
-    
-    // setMemoToMemoArea(node) {
-    //     this.memoArea.value = node.getMemo();
-    // }
 
 
     setSelectedMemo(node) {
         this.#selectedMemo = node;
-        this.titleArea.innerHTML = node.getTitle();
-        this.memoArea.value = node.getMemo(); 
+        this.titleSpace.innerHTML = node.getTitle();
+        this.memoSpace.value = node.getMemo(); 
     }
-
-
-    getMemoToMemoArea() {
-        return this.memoArea.value;
-    }
-
-
+    
+    
     getSelectedMemo() {
         return this.#selectedMemo;
+    }
+
+
+    getTitleFromTitleSpace() {
+        return this.titleSpace.innerText;
+    }
+
+
+    getMemoFromMemoSpace() {
+        return this.memoSpace.value;
+    }
+
+    saveMemo() {
+        
     }
 }

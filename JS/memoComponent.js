@@ -22,6 +22,7 @@ function createEditIcon() {
     return editIcon;
 }
 
+
 function createDeleteIcon() {
     let deleteIcon = document.createElement("i");
     deleteIcon.setAttribute("class", "fa-solid fa-xmark");
@@ -30,6 +31,7 @@ function createDeleteIcon() {
 
     return deleteIcon;
 }
+
 
 function createEditButton(editIcon) {
     let editButton = document.createElement("button");
@@ -94,8 +96,12 @@ class MemoComponent {
 
     deleteComponent(component) {
         let memoNode = memoData.getNode(component.firstChild.innerHTML);
-        console.log(memoNode)
         memoData.deleteNode(memoNode);
+    }
+
+
+    insertComponent(component) {
+        
     }
 
 
@@ -104,7 +110,7 @@ class MemoComponent {
 
         if(component.lastChild.className === "titleEditer") {
             let inputValue = component.lastChild.value;
-    
+            
             if(inputValue !== "") {
                 memoNode.setTitle(inputValue);
                 if(inputValue.length >= 6) {
@@ -113,7 +119,6 @@ class MemoComponent {
                     component.firstChild.innerHTML = memoNode.getTitle();
                 }
             }
-            titleArea.innerHTML = memoNode.getTitle()
             component.removeChild(component.lastChild);
         } else {
             // 제목 수정창을 생성);

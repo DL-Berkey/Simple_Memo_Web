@@ -53,27 +53,35 @@ footer {
     width: 100%;
     height: 5.3%;
 
+    display: flex;
+    justify-content: space-between;
+
     border-top: 2px solid #94B49F;
     border-bottom: 2px solid #94B49F;
 }
 
-#memo_list {
+#memo_list, #trash_list {
     width: 100%;
     height: 94.7%;
+}
+
+#trash_list {
+    display: none;
+    z-index: 10;
+    position: absolute;
+    top: 5.3%;
 }
 
 .nav_button {
     all: unset;
     width: fit-content;
     height: fit-content;
-    
-    float: right;
 
-    margin-right: 15px;
+    margin-right: 10px;
     color: #94B49F;
 }
 
-#titleArea {
+#titleSpace {
     width: fit-content;
     height: 7%;
     border-bottom: 1px solid #94B49F;
@@ -81,7 +89,7 @@ footer {
     font-size: 30px;
 }
 
-#memoArea {
+#memoSpace {
     all: unset;
     width: 100%;
     height: 80%;
