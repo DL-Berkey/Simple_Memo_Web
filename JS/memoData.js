@@ -80,7 +80,7 @@ class Node {
 }
 
 
-class MemoLinkedList {
+export default class MemoLinkedList {
     //private field 선언
     #head
 

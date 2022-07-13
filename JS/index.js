@@ -1,7 +1,15 @@
+import MemoLinkedList from "./memoData.js"
+import MemoComponent from "./memoComponent.js"
+import MemoManager from "./memoManager.js"
+import ListManager from "./listManager.js"
+import {db} from "./dbManager.js"
+
+
 let memoList = document.getElementById("memo_list");
-let trashList = document.getElementById("trash_list");
+let trashList = document.getElementById("trash_list"); // 삭제 요망
 let titleSpace = document.getElementById("titleSpace");
 let memoSpace = document.getElementById("memoSpace");
+let trashButton = document.getElementById("trash_button")
 
 
 let memoData = new MemoLinkedList();
@@ -74,3 +82,16 @@ document.addEventListener("click", (e) => {
         memoManager.setSelectedMemo(memoData.getNode(title));
     }
 });
+
+trashButton.addEventListener("click", (e) => {
+    console.log("clicked!")
+    let store = db.transaction("memos", "readwrite").objectStore("memos");
+    let addRequest = store.add({
+        id: 1,
+        memoTitle: "title",
+        memoContent: "content"
+    });
+    addRequest.addEventListener("success", (e) => {
+        console.log(e)
+    })
+})

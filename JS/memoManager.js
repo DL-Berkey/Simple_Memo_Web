@@ -1,4 +1,4 @@
-class MemoManager {
+export default class MemoManager {
     //private field 선언
     #selectedMemo;
 

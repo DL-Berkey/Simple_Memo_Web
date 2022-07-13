@@ -64,7 +64,7 @@ function createMemoTitleEditer() {
 }
 
 // memoComponent 생성
-class MemoComponent {
+export default class MemoComponent {
     constructor(memoData) {
         this.memoLinkedList = memoData;
     }

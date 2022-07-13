@@ -1,4 +1,4 @@
-class ListManager {
+export default class ListManager {
     constructor(memoList, trashList) {
         this.memoList = memoList;
         this.trashList = trashList;
